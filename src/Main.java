@@ -1,83 +1,47 @@
+import javax.swing.*;
 import java.util.Random;
-import java.util.Scanner;
 
-public class Main {
+public class ReverseArray {
     public static void main(String[] args) {
-        Scanner scanner = new Scanner(System.in);
 
-
-        int n = 0, m = 0;
+        int n = 0;
         boolean validInput = false;
+        
         while (!validInput) {
+            String input = JOptionPane.showInputDialog(null, "Введите размер массива (целое число):");
+            if (input == null) {
+                return; 
+            }
             try {
-                System.out.print("Введите количество строк (n): ");
-                n = Integer.parseInt(scanner.nextLine());
-                System.out.print("Введите количество столбцов (m): ");
-                m = Integer.parseInt(scanner.nextLine());
-                if (n > 0 && m > 0) {
-                    validInput = true;
+                n = Integer.parseInt(input);
+                if (n <= 0) {
+                    JOptionPane.showMessageDialog(null, "Размер массива должен быть положительным целым числом.");
                 } else {
-                    System.out.println("Размеры матрицы должны быть положительными числами. Попробуйте снова.");
+                    validInput = true;
                 }
             } catch (NumberFormatException e) {
-                System.out.println("Некорректный ввод. Введите целые числа.");
+                JOptionPane.showMessageDialog(null, "Некорректный ввод: введите целое число.");
             }
         }
 
+        int[] array = new Random().ints(n, 0, 101).toArray();
+        int[] reversedArray = new int[n];
 
-        int[][] matrix = new int[n][m];
-        Random random = new Random();
         for (int i = 0; i < n; i++) {
-            for (int j = 0; j < m; j++) {
-                matrix[i][j] = random.nextInt(100); // случайные числа от 0 до 99
-            }
+            reversedArray[i] = array[n - 1 - i];
+        }
+
+        StringBuilder originalArrayStr = new StringBuilder("Исходный массив:\n");
+        for (int num : array) {
+            originalArrayStr.append(num).append("\n");
+        }
+
+        StringBuilder reversedArrayStr = new StringBuilder("Обращенный массив:\n");
+        for (int num : reversedArray) {
+            reversedArrayStr.append(num).append("\n");
         }
 
 
-        System.out.println("Исходная матрица:");
-        for (int i = 0; i < n; i++) {
-            for (int j = 0; j < m; j++) {
-                System.out.print(matrix[i][j] + "\t");
-            }
-            System.out.println();
-        }
-
-
-        int max = Integer.MIN_VALUE;
-        int min = Integer.MAX_VALUE;
-        for (int i = 0; i < n; i++) {
-            for (int j = 0; j < m; j++) {
-                if (matrix[i][j] > max) {
-                    max = matrix[i][j];
-                }
-                if (matrix[i][j] < min) {
-                    min = matrix[i][j];
-                }
-            }
-        }
-        System.out.println("Максимальное значение: " + max);
-        System.out.println("Минимальное значение: " + min);
-
-
-        System.out.println("Суммы элементов для каждой строки:");
-        for (int i = 0; i < n; i++) {
-            int rowSum = 0;
-            for (int j = 0; j < m; j++) {
-                rowSum += matrix[i][j];
-            }
-            System.out.println("Строка " + (i + 1) + ": " + rowSum);
-        }
-
-
-        System.out.println("Суммы элементов для каждого столбца:");
-        for (int j = 0; j < m; j++) {
-            int colSum = 0;
-            for (int i = 0; i < n; i++) {
-                colSum += matrix[i][j];
-            }
-            System.out.println("Столбец " + (j + 1) + ": " + colSum);
-        }
-
-        scanner.close();
+        JOptionPane.showMessageDialog(null, originalArrayStr.toString() + "\n" + reversedArrayStr.toString());
     }
 }
